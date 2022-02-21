@@ -14,7 +14,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     private float turnAmount, forwardAmount;
     private Transform camTransform;
-    private bool firstAnimationMove = false;
 
 	private void Awake()
     {

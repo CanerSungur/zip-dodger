@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     internal SwerveMovement swerveMovement;
 
     [Header("-- MOVEMENT SETUP --")]
+    [SerializeField] private bool useAcceleration;
     [SerializeField] private float maxMovementSpeed = 3f;
     [SerializeField] private float minMovementSpeed = 1f;
     [SerializeField, Range(0.1f, 3f)] private float accelerationRate = 0.5f;
@@ -35,6 +37,11 @@ public class Player : MonoBehaviour
     [Header("-- GROUNDED SETUP --")]
     [SerializeField, Tooltip("Select layers that you want player to be grounded.")] private LayerMask groundLayerMask;
     [SerializeField, Tooltip("Height that player will be considered grounded when above groundable layers.")] private float groundedHeightLimit = 0.1f;
+
+    [Header("-- ZIPPER SETUP --")]
+    public int CurrentRow = 0;
+    private List<ChildZipper> childZippers = new List<ChildZipper>();
+    public List<ChildZipper> ChildZippers => childZippers;
 
     #region Properties
 
@@ -79,7 +86,12 @@ public class Player : MonoBehaviour
 
         IsDead = false;
         IsLanded = true;
-        currentMovementSpeed = minMovementSpeed;
+        if (useAcceleration)
+            currentMovementSpeed = minMovementSpeed;
+        else
+            currentMovementSpeed = maxMovementSpeed;
+
+        childZippers.Clear();
     }
 
     private void OnEnable() => CharacterPositionHolder.PlayerInScene = this;
@@ -90,7 +102,7 @@ public class Player : MonoBehaviour
         OnJump += () => IsLanded = false;
         OnLand += () => IsLanded = true;
 
-        playerCollision.OnHitSomethingBack += () => currentMovementSpeed = minMovementSpeed;
+        playerCollision.OnHitSomethingBack += () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
     }
 
     private void OnDisable()
@@ -99,14 +111,15 @@ public class Player : MonoBehaviour
         OnJump -= () => IsLanded = false;
         OnLand -= () => IsLanded = true;
 
-        playerCollision.OnHitSomethingBack -= () => currentMovementSpeed = minMovementSpeed;
+        playerCollision.OnHitSomethingBack -= () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
     }
 
     private void Update()
     {
         if (!IsMoving() && IsGrounded() && rb) rb.velocity = Vector3.zero;
 
-        UpdateCurrentMovementSpeed();
+        if (useAcceleration)
+            UpdateCurrentMovementSpeed();
     }
 
     private void UpdateCurrentMovementSpeed()
@@ -129,7 +142,7 @@ public class Player : MonoBehaviour
 
     public bool IsGrounded()
     {
-        return joystickInput ? Physics.Raycast(coll.bounds.center, Vector3.down, coll.bounds.extents.y + groundedHeightLimit, groundLayerMask) && !joystickInput.JumpPressed : 
+        return joystickInput ? Physics.Raycast(coll.bounds.center, Vector3.down, coll.bounds.extents.y + groundedHeightLimit, groundLayerMask) && !joystickInput.JumpPressed :
             Physics.Raycast(coll.bounds.center, Vector3.down, coll.bounds.extents.y + groundedHeightLimit, groundLayerMask);
     }
 

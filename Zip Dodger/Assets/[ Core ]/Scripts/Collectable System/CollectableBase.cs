@@ -60,4 +60,4 @@ public abstract class CollectableBase : MonoBehaviour, ICollectable
 }
 public enum CollectStyle { OnSite, MoveToUI }
 public enum CollectableStyle { Collect, Reward }
-public enum CollectableEffect { Positive, Negative }
+public enum CollectableEffect { Positive, Negative, SpawnZipper }

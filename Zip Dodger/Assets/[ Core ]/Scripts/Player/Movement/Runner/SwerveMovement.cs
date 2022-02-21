@@ -36,8 +36,13 @@ public class SwerveMovement : MonoBehaviour
             //TurnPlayer();
         }
 
-        transform.Translate(player.swerveInput.SwerveAmount, 0f, 0f);
-        player.rb.velocity = Vector3.forward * player.CurrentMovementSpeed;
+        if (player.IsGrounded())
+        {
+            //transform.Translate(player.swerveInput.SwerveAmount, 0f, 0f);
+            Vector3 newPos = transform.position + new Vector3(player.swerveInput.SwerveAmount, 0f, 0f);
+            transform.position = Vector3.Lerp(transform.position, newPos, player.CurrentMovementSpeed * Time.fixedDeltaTime);
+            player.rb.velocity = Vector3.forward * player.CurrentMovementSpeed;
+        }
     }
 
     private void CheckTurnDirection()
