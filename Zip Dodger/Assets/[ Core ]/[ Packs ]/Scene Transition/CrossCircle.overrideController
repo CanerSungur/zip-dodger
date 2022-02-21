@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CrossCircle
+  m_Controller: {fileID: 9100000, guid: 81c086798e6db8045bc0ceab406ff8f7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: e50810b90e6b6584eaf3d58112b6ea37, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b07e3406aa0b89a468f1603cfbd856bd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 93d89f340e6bc7840ac372b4c67afb91, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: fe868443593319e41a064480d0d30995, type: 2}
