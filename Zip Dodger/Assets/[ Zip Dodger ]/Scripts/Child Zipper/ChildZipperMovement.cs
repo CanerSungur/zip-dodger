@@ -8,6 +8,8 @@ public class ChildZipperMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (ChildZipper.IsDetached) return;
+
         Vector3 newPos = ChildZipper.FollowTarget.position + (Vector3.forward * ChildZipper.FollowDistance);
         transform.position = Vector3.Lerp(transform.position, newPos, ChildZipper.Speed * Time.fixedDeltaTime);
     }

@@ -56,25 +56,25 @@ public class CoinMovement : MonoBehaviour
                 startedRotating = true;
             }
             //triggerMoving = false;
-        }
 
-        if (Vector3.Distance(transform.position, coinHUDWorldPos) <= 1f && !coinHasReached)
-        {
-            triggerMoving = false;
-            //transform.DOScale(new Vector3(0.5f, 1.2f, 0.7f), 0.5f).SetEase(Ease.InElastic).OnComplete(() => {
-            //    transform.DOScale(new Vector3(1.1f, 0.7f, 1.2f), 0.5f).SetEase(Ease.InElastic);
-            //});
-            //PlayerStats.OnIncreaseCoin?.Invoke(1);
-            
-            //HUDUI.UpdateCoinTrigger(value);
-            Coin.CollectableManager.GameManager.IncreaseCoinTrigger(Coin.Value);
-            transform.DOScale(0, 0.5f).SetEase(Ease.OutElastic).OnComplete(() => {
+            if (Vector3.Distance(transform.position, coinHUDWorldPos) <= 2.5f && !coinHasReached)
+            {
+                triggerMoving = false;
+                //transform.DOScale(new Vector3(0.5f, 1.2f, 0.7f), 0.5f).SetEase(Ease.InElastic).OnComplete(() => {
+                //    transform.DOScale(new Vector3(1.1f, 0.7f, 1.2f), 0.5f).SetEase(Ease.InElastic);
+                //});
+                //PlayerStats.OnIncreaseCoin?.Invoke(1);
+
+                //HUDUI.UpdateCoinTrigger(value);
+                Coin.CollectableManager.GameManager.IncreaseCoinTrigger(Coin.Value);
+                transform.DOScale(0, 0.5f).SetEase(Ease.OutElastic).OnComplete(() => {
 
 
-                transform.DOKill();
-                Destroy(gameObject, 1f);
-            });
-            coinHasReached = true;
+                    transform.DOKill();
+                    Destroy(gameObject, 1f);
+                });
+                coinHasReached = true;
+            }
         }
     }
 

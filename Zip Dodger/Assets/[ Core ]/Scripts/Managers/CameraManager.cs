@@ -56,14 +56,15 @@ public class CameraManager : MonoBehaviour
         Player.OnPickedUpSomething += UpdatePositon;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameManager.OnGameStart -= () => gameplayCM.Priority = 2;
         OnShakeCam -= () => shakeStarted = true;
 
-        Player.OnPickedUpSomething -= UpdatePositon;
-
         transform.DOKill();
+
+        if (Player)
+            Player.OnPickedUpSomething -= UpdatePositon;
     }
 
     private void Update()

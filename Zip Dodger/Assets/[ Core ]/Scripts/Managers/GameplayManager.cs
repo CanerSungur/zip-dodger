@@ -86,7 +86,7 @@ public class GameplayManager : MonoBehaviour
         if (currentTrapCount >= trapNeededTofail)
             LevelFail();
 
-        if (collectableEffect == CollectableEffect.Negative) return;
+        if (collectableEffect != CollectableEffect.Positive) return;
 
         if (_WinType == WinType.Direct)
         {

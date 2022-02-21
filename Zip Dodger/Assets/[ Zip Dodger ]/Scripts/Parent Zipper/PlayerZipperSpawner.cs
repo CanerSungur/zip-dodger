@@ -21,6 +21,8 @@ public class PlayerZipperSpawner : MonoBehaviour
 
     private void HandlePickUp(CollectableEffect obj)
     {
+        if (obj != CollectableEffect.SpawnZipper) return;
+
         Player.CurrentRow++;
         //ChildZipper zipper = Instantiate(childZipperPrefab, transform.position + (Vector3.forward * (Player.CurrentRow * 1.5f)), Quaternion.identity).GetComponent<ChildZipper>();
         ChildZipper zipper = Instantiate(childZipperPrefab, transform.position + new Vector3(Player.CurrentRow * 1.5f, 0f, Random.Range(-2f, 2f)), Quaternion.identity).GetComponent<ChildZipper>();

@@ -63,7 +63,7 @@ MonoBehaviour:
   CollectableStyle: 0
   CollectStyle: 0
   CollectableEffect: 0
-  collectEffect: {fileID: 0}
+  collectEffect: {fileID: 1497338381995510465, guid: 670f863f681d2b5499cd5fe6a132d265, type: 3}
   coinMovement: {fileID: 5031208824877614772}
   value: 1
   movementSpeed: 3

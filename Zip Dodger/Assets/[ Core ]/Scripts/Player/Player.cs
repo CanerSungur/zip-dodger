@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
 
     public event Action OnKill, OnJump, OnLand;
     public event Action<CollectableEffect> OnPickedUpSomething;
+    public event Action<int> OnDetachZipper;
 
     private void Awake()
     {
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
         OnKill += () => IsDead = true;
         OnJump += () => IsLanded = false;
         OnLand += () => IsLanded = true;
+        OnDetachZipper += DetachZipper;
 
         playerCollision.OnHitSomethingBack += () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
     }
@@ -110,6 +112,7 @@ public class Player : MonoBehaviour
         OnKill -= () => IsDead = true;
         OnJump -= () => IsLanded = false;
         OnLand -= () => IsLanded = true;
+        OnDetachZipper -= DetachZipper;
 
         playerCollision.OnHitSomethingBack -= () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
     }
@@ -120,6 +123,16 @@ public class Player : MonoBehaviour
 
         if (useAcceleration)
             UpdateCurrentMovementSpeed();
+    }
+
+    public void DetachZipper(int row)
+    {
+        for (int i = childZippers.Count - 1; i >= row - 1; i--)
+        {
+            childZippers[i].Detach();
+            childZippers.RemoveAt(i);
+            CurrentRow--;
+        }
     }
 
     private void UpdateCurrentMovementSpeed()
@@ -150,4 +163,5 @@ public class Player : MonoBehaviour
     public void JumpTrigger() => OnJump?.Invoke();
     public void LandTrigger() => OnLand?.Invoke();
     public void PickUpTrigger(CollectableEffect effect) => OnPickedUpSomething?.Invoke(effect);
+    public void DetachZipperTrigger(int row) => OnDetachZipper?.Invoke(row);
 }
