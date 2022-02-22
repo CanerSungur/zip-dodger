@@ -23,7 +23,7 @@ public class PlayerZipperSpawner : MonoBehaviour
     {
         if (obj != CollectableEffect.SpawnZipper) return;
 
-        Player.CurrentRow++;
+        Player.IncreaseCurrentRow();
         //ChildZipper zipper = Instantiate(childZipperPrefab, transform.position + (Vector3.forward * (Player.CurrentRow * 1.5f)), Quaternion.identity).GetComponent<ChildZipper>();
         ChildZipper zipper = Instantiate(childZipperPrefab, transform.position + new Vector3(Player.CurrentRow * 1.5f, 0f, Random.Range(-2f, 2f)), Quaternion.identity).GetComponent<ChildZipper>();
         

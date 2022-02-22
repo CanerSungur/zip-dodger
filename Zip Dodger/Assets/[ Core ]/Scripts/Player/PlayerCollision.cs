@@ -56,19 +56,25 @@ public class PlayerCollision : MonoBehaviour
 
         //Debug.Log(collision.gameObject.name);
 
-        if (collision.gameObject.TryGetComponent(out CollectableBase collectable))
-        {
-            collectable.Collect();
-            player.PickUpTrigger(collectable.CollectableEffect);
-        }
+        //if (collision.gameObject.TryGetComponent(out CollectableBase collectable))
+        //{
+        //    collectable.Collect();
+        //    player.PickUpTrigger(collectable.CollectableEffect);
+        //}
+
+        //if (player.CurrentRow == 0 && collision.gameObject.TryGetComponent(out Grinder grinder))
+        //{
+        //    grinder.Execute();
+        //    player.KillTrigger();
+        //}
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out CollectableBase collectable))
-        {
-            collectable.Collect();
-            player.PickUpTrigger(collectable.CollectableEffect);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.TryGetComponent(out CollectableBase collectable))
+    //    {
+    //        collectable.Collect();
+    //        player.PickUpTrigger(collectable.CollectableEffect);
+    //    }
+    //}
 }

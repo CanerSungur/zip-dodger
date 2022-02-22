@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class ChildZipper : MonoBehaviour
 {
@@ -29,20 +30,22 @@ public class ChildZipper : MonoBehaviour
     public float Speed => speed;
     public Transform FollowTarget => followTarget;
     public bool IsDetached { get; private set; }
+    public float DetachmentForce => detachmentForce;
+
+    public event Action OnActivateInnerZipperPair;
 
     private void OnEnable()
     {
         childZipperMovement = GetComponent<ChildZipperMovement>();
         childZipperCollision = GetComponent<ChildZipperCollision>();
 
-        IsDetached = false;
-
-        //Player.OnDetachZipper += Detach;
+        IsDetached = Rigidbody.isKinematic = false;
+        Collider.enabled = true;
     }
 
     private void OnDisable()
     {
-        //Player.OnDetachZipper -= Detach;
+        OnActivateInnerZipperPair = null;
     }
 
     public void SetRow(int row) => this.row = row;
@@ -58,16 +61,10 @@ public class ChildZipper : MonoBehaviour
 
     public void Detach()
     {
-        // Reduce player's row.
-        // Detach all zippers in front of this zipper.
-        IsDetached = true;
-        gameObject.layer = LayerMask.NameToLayer("DetachedZipper");
+        IsDetached = Rigidbody.isKinematic = true;
+        Collider.enabled = childZipperMovement.enabled = false;
 
-        childZipperMovement.enabled = false;
-        ApplyRandomForce();
-
-        Destroy(gameObject, 10f);
-        //Destroy(gameObject);
+        OnActivateInnerZipperPair?.Invoke();
     }
 
     private void ApplyRandomForce()
@@ -75,5 +72,5 @@ public class ChildZipper : MonoBehaviour
         Rigidbody.AddForce(GenerateRandomForce() * detachmentForce, ForceMode.Impulse);
     }
 
-    private Vector3 GenerateRandomForce() => new Vector3(Random.Range(-2f, 2f), Random.Range(1f, 2f), Random.Range(-1f, 1f));
+    private Vector3 GenerateRandomForce() => new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(1f, 2f), UnityEngine.Random.Range(-1f, 1f));
 }

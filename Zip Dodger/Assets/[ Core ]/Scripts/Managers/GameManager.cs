@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
         OnGameEnd -= () => ChangeState(GameState.Finished);
         OnLevelSuccess -= LevelSuccess;
         OnLevelFail -= LevelFail;
+
+        OnGameStart = OnGameEnd = OnLevelSuccess = OnLevelFail = OnChangeScene = OnCalculateReward = OnChangePhase = null;
+        OnIncreaseCoin = null;
     }
 
     private void LevelSuccess()

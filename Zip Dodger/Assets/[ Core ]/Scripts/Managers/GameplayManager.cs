@@ -18,10 +18,12 @@ public class GameplayManager : MonoBehaviour
 
     [Header("-- WIN CONDITIONS --")]
     [SerializeField, Tooltip("Amount of coin needed to win level.")]private int coinNeededToWin = 5;
+    private bool finishHasReached = false;
     private int currentCoinCount = 0;
 
     [Header("-- FAIL CONDITIONS --")]
     [SerializeField, Tooltip("Amount of trap needed to fail level.")] private int trapNeededTofail = 2;
+    private bool noZipperLeft = false;
     private int currentTrapCount = 0;
 
     [Header("-- PHASE CONDITIONS --")]
@@ -45,14 +47,14 @@ public class GameplayManager : MonoBehaviour
 
     private void Start()
     {
-        player.OnPickedUpSomething += UpdatePickUpCondition;
+        //player.OnPickedUpSomething += UpdatePickUpCondition;
 
         player.OnKill += LevelFail;
     }
 
     private void OnDisable()
     {
-        player.OnPickedUpSomething -= UpdatePickUpCondition;
+        //player.OnPickedUpSomething -= UpdatePickUpCondition;
 
         player.OnKill -= LevelFail;
     }

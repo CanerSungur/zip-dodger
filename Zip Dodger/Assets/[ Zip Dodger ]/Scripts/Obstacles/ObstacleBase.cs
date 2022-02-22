@@ -17,6 +17,8 @@ public abstract class ObstacleBase : MonoBehaviour, IObstacle
 
     public virtual void Execute()
     {
+        CameraManager.ShakeCamTrigger();
+
         if (obstacleEffect)
         {
             ParticleSystem ps = Instantiate(obstacleEffect, hitPoint, Quaternion.Euler(0f, 180f, 0f)).GetComponent<ParticleSystem>();

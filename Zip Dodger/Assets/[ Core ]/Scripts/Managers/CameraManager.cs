@@ -32,7 +32,7 @@ public class CameraManager : MonoBehaviour
     public float CurrentYOffset => gameplayCMTransposer.m_FollowOffset.y;
     public float CurrentFOV => gameplayCM.m_Lens.FieldOfView;
 
-    public event Action OnShakeCam;
+    public static event Action OnShakeCam;
 
     private void Awake()
     {
@@ -65,6 +65,8 @@ public class CameraManager : MonoBehaviour
 
         if (Player)
             Player.OnPickedUpSomething -= UpdatePositon;
+
+        OnShakeCam = null;
     }
 
     private void Update()
@@ -76,11 +78,13 @@ public class CameraManager : MonoBehaviour
     {
         if (obj == CollectableEffect.SpawnZipper)
         {
-            DOVirtual.Float(CurrentYOffset, defaultYOffset + (Player.CurrentRow * camYAxisChangeRate), camYAxisUpdateTime, newYOffset => {
+            DOVirtual.Float(CurrentYOffset, defaultYOffset + (Player.CurrentRow * camYAxisChangeRate), camYAxisUpdateTime, newYOffset =>
+            {
                 gameplayCMTransposer.m_FollowOffset.y = newYOffset;
             }).SetEase(Ease.InOutSine);
 
-            DOVirtual.Float(CurrentFOV, defaultFOV + (Player.CurrentRow * camFOVChangeRate), camYAxisUpdateTime, newFOV => {
+            DOVirtual.Float(CurrentFOV, defaultFOV + (Player.CurrentRow * camFOVChangeRate), camYAxisUpdateTime, newFOV =>
+            {
                 gameplayCM.m_Lens.FieldOfView = newFOV;
             }).SetEase(Ease.InOutSine);
         }
@@ -102,4 +106,6 @@ public class CameraManager : MonoBehaviour
             }
         }
     }
+
+    public static void ShakeCamTrigger() => OnShakeCam?.Invoke();
 }

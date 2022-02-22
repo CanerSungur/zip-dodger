@@ -38,6 +38,7 @@ public class CoinMovement : MonoBehaviour
     {
         OnStartMovement -= StartMoving;
 
+        OnStartMovement = null;
         transform.DOKill();
     }
 

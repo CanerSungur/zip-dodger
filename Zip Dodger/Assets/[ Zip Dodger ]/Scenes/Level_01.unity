@@ -4696,18 +4696,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5331413995981604865, guid: 352d90107c316414d9a8b08f426a7d10, type: 3}
-      propertyPath: swerveSpeed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331413995981604865, guid: 352d90107c316414d9a8b08f426a7d10, type: 3}
-      propertyPath: maxSwerveAmount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5331413995981604865, guid: 352d90107c316414d9a8b08f426a7d10, type: 3}
-      propertyPath: maxMovementSpeed
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 5331413995981604868, guid: 352d90107c316414d9a8b08f426a7d10, type: 3}
       propertyPath: m_Name
       value: Zipper Left Example

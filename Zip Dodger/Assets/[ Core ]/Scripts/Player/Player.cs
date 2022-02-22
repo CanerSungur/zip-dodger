@@ -39,12 +39,15 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("Height that player will be considered grounded when above groundable layers.")] private float groundedHeightLimit = 0.1f;
 
     [Header("-- ZIPPER SETUP --")]
-    public int CurrentRow = 0;
+    [SerializeField] private float detachmentForce;
+    private int currentRow = 0;
     private List<ChildZipper> childZippers = new List<ChildZipper>();
     public List<ChildZipper> ChildZippers => childZippers;
 
     #region Properties
 
+    public int CurrentRow => currentRow;
+    public float DetachmentForce => detachmentForce;
     public float CurrentMovementSpeed => currentMovementSpeed;
     public float SwerveSpeed => swerveSpeed;
     public float MaxSwerveAmount => maxSwerveAmount;
@@ -115,6 +118,10 @@ public class Player : MonoBehaviour
         OnDetachZipper -= DetachZipper;
 
         playerCollision.OnHitSomethingBack -= () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
+
+        OnKill = OnJump = OnLand = null;
+        OnPickedUpSomething = null;
+        OnDetachZipper = null;
     }
 
     private void Update()
@@ -131,7 +138,7 @@ public class Player : MonoBehaviour
         {
             childZippers[i].Detach();
             childZippers.RemoveAt(i);
-            CurrentRow--;
+            DecreaseCurrentRow();
         }
     }
 
@@ -164,4 +171,6 @@ public class Player : MonoBehaviour
     public void LandTrigger() => OnLand?.Invoke();
     public void PickUpTrigger(CollectableEffect effect) => OnPickedUpSomething?.Invoke(effect);
     public void DetachZipperTrigger(int row) => OnDetachZipper?.Invoke(row);
+    public void IncreaseCurrentRow() => currentRow++;
+    public void DecreaseCurrentRow() => currentRow--;
 }
