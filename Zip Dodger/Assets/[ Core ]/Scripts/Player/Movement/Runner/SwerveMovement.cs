@@ -38,12 +38,17 @@ public class SwerveMovement : MonoBehaviour
 
         if (player.IsGrounded())
         {
-            //transform.Translate(player.swerveInput.SwerveAmount, 0f, 0f);
-            Vector3 newPos = transform.position + new Vector3(player.swerveInput.SwerveAmount, 0f, 0f);
+            float swerveAmount = Time.fixedDeltaTime * player.SwerveSpeed * player.swerveInput.MoveFactorX;
+            swerveAmount = Mathf.Clamp(swerveAmount, -player.MaxSwerveAmount, player.MaxSwerveAmount);
+
+            Vector3 newPos = transform.position + new Vector3(swerveAmount, 0f, 0f);
             transform.position = Vector3.Lerp(transform.position, newPos, player.CurrentMovementSpeed * Time.fixedDeltaTime);
+            ApplyLimitToPositionX(player.HorizontalMovementLimit.x, player.HorizontalMovementLimit.y);
             player.rb.velocity = Vector3.forward * player.CurrentMovementSpeed;
         }
     }
+
+    private void ApplyLimitToPositionX(float min, float max) => transform.position = new Vector3(Mathf.Clamp(transform.position.x, min, max), transform.position.y, transform.position.z);
 
     private void CheckTurnDirection()
     {

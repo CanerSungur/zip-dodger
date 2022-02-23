@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float turnSmoothTime = 0.5f;
     [SerializeField] private float jumpForce = 50f;
     [SerializeField] private float jumpCooldown = 2f;
+    [SerializeField, Tooltip("Min and max limit of x axis movement.")] private Vector2 horizontalMovementLimit;
     private float currentMovementSpeed = 1f;
 
     [Header("-- SWERVE MOVEMENT SETUP --")]
@@ -40,13 +41,13 @@ public class Player : MonoBehaviour
 
     [Header("-- ZIPPER SETUP --")]
     [SerializeField] private float detachmentForce;
-    private int currentRow = 0;
+    //private static int currentRow = 0;
     private List<ChildZipper> childZippers = new List<ChildZipper>();
     public List<ChildZipper> ChildZippers => childZippers;
 
     #region Properties
 
-    public int CurrentRow => currentRow;
+    public static int CurrentRow { get; set; }
     public float DetachmentForce => detachmentForce;
     public float CurrentMovementSpeed => currentMovementSpeed;
     public float SwerveSpeed => swerveSpeed;
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     public float JumpCooldown => jumpCooldown;
     public Vector3 AirVelocity { get; set; }
     public Vector3 CurrentVelocity => IsGrounded() ? rb.velocity : AirVelocity;
+    public Vector2 HorizontalMovementLimit => horizontalMovementLimit;
 
     // Controls
     public bool IsControllable => GameManager.GameState == GameState.Started && !IsDead;
@@ -96,6 +98,8 @@ public class Player : MonoBehaviour
             currentMovementSpeed = maxMovementSpeed;
 
         childZippers.Clear();
+
+        CurrentRow = 0;
     }
 
     private void OnEnable() => CharacterPositionHolder.PlayerInScene = this;
@@ -128,6 +132,8 @@ public class Player : MonoBehaviour
     {
         if (!IsMoving() && IsGrounded() && rb) rb.velocity = Vector3.zero;
 
+        currentMovementSpeed = maxMovementSpeed;
+
         if (useAcceleration)
             UpdateCurrentMovementSpeed();
     }
@@ -138,7 +144,8 @@ public class Player : MonoBehaviour
         {
             childZippers[i].Detach();
             childZippers.RemoveAt(i);
-            DecreaseCurrentRow();
+            //DecreaseCurrentRow();
+            CurrentRow--;
         }
     }
 
@@ -155,7 +162,7 @@ public class Player : MonoBehaviour
         if (joystickInput)
             return joystickInput.InputValue.magnitude > 0.05f;
         else if (swerveInput)
-            return swerveInput.SwerveAmount > 0.01f;
+            return swerveInput.MoveFactorX > 0.01f;
         else
             return false;
     }
@@ -171,6 +178,6 @@ public class Player : MonoBehaviour
     public void LandTrigger() => OnLand?.Invoke();
     public void PickUpTrigger(CollectableEffect effect) => OnPickedUpSomething?.Invoke(effect);
     public void DetachZipperTrigger(int row) => OnDetachZipper?.Invoke(row);
-    public void IncreaseCurrentRow() => currentRow++;
-    public void DecreaseCurrentRow() => currentRow--;
+    //public void IncreaseCurrentRow() => currentRow++;
+    //public void DecreaseCurrentRow() => currentRow--;
 }

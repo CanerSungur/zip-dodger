@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 1856465965260666911}
   - component: {fileID: 5036077822590785065}
   - component: {fileID: 291512245463819415}
-  m_Layer: 0
+  - component: {fileID: 9020316167215552824}
+  m_Layer: 8
   m_Name: Right
   m_TagString: Zipper
   m_Icon: {fileID: 0}
@@ -125,7 +126,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1311b2bab2e16d949809bca465820372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Side: 1
   _Type: 0
+--- !u!114 &9020316167215552824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162527011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be230079f95f164884039a9cc7ed2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1748524496
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +154,8 @@ GameObject:
   - component: {fileID: 7593265323642918628}
   - component: {fileID: 9008493381895820760}
   - component: {fileID: 1170545830088119202}
-  m_Layer: 0
+  - component: {fileID: 9053231769680047516}
+  m_Layer: 8
   m_Name: Left
   m_TagString: Zipper
   m_Icon: {fileID: 0}
@@ -251,7 +266,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1311b2bab2e16d949809bca465820372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Side: 0
   _Type: 0
+--- !u!114 &9053231769680047516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748524496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be230079f95f164884039a9cc7ed2e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5331413995981604868
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,20 +347,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useAcceleration: 0
-  maxMovementSpeed: 7
+  maxMovementSpeed: 5
   minMovementSpeed: 1
   accelerationRate: 0.5
   turnSmoothTime: 0.5
   jumpForce: 50
   jumpCooldown: 2
-  swerveSpeed: 4
-  maxSwerveAmount: 5
+  horizontalMovementLimit: {x: -4.5, y: 4.5}
+  swerveSpeed: 3
+  maxSwerveAmount: 4
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 8
   groundedHeightLimit: 0.1
   detachmentForce: 5
-  CurrentRow: 0
 --- !u!114 &5331413995981604870
 MonoBehaviour:
   m_ObjectHideFlags: 0

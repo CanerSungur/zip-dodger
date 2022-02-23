@@ -1570,7 +1570,7 @@ Transform:
   m_GameObject: {fileID: 8926249142843280180}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0.59, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8926249142216348238}
   - {fileID: 8926249141800905613}
@@ -1711,6 +1711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposable: 0
   obstacleEffect: {fileID: 107226, guid: a26def66edc4ef74d92c8394aee18174, type: 3}
+  pushBack: 1
   pushBackForce: 100
 --- !u!1 &8926249142879381142
 GameObject:

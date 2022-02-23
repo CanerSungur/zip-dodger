@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ZipperPairHandler : MonoBehaviour
 {
+    public enum Side { Left, Right }
+    public Side _Side;
     public enum Type { Parent, Child }
     public Type _Type;
 
@@ -16,6 +18,22 @@ public class ZipperPairHandler : MonoBehaviour
 
     private Collider coll;
     public Collider Collider { get { return coll == null ? coll = GetComponent<Collider>() : coll; } }
+
+    private GapMovement gapMovement;
+    public GapMovement GapMovement => gapMovement == null ? gapMovement = FindObjectOfType<GapMovement>() : gapMovement;
+
+    public bool CantMove
+    {
+        get
+        {
+            if (_Type == Type.Parent)
+                return Player.IsDead;
+            else if (_Type == Type.Child)
+                return ChildZipper.IsDetached;
+            else
+                return false;
+        }
+    }
 
     private void OnEnable()
     {
@@ -43,7 +61,7 @@ public class ZipperPairHandler : MonoBehaviour
         //Collider.enabled = true;
         ApplyRandomForce();
 
-        //Destroy(gameObject, 10f);
+        Destroy(gameObject, 20f);
         //Destroy(gameObject);
     }
 
@@ -60,15 +78,15 @@ public class ZipperPairHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (_Type == Type.Parent && Player.CurrentRow == 0 && collision.gameObject.TryGetComponent(out Grinder grinderForParent))
+        if (_Type == Type.Parent && Player.CurrentRow == 0 && collision.gameObject.TryGetComponent(out ObstacleBase obstacleForParent))
         {
-            grinderForParent.Execute();
+            obstacleForParent.Execute();
             Player.KillTrigger();
         }
 
-        if (_Type == Type.Child && !ChildZipper.IsDetached && collision.gameObject.TryGetComponent(out Grinder grinderForChild))
+        if (_Type == Type.Child && !ChildZipper.IsDetached && collision.gameObject.TryGetComponent(out ObstacleBase obstacleForChild))
         {
-            grinderForChild.Execute();
+            obstacleForChild.Execute();
             ChildZipper.Player.DetachZipperTrigger(ChildZipper.Row);
         }
     }

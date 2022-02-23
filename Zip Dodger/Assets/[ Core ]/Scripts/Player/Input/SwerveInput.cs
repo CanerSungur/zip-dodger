@@ -8,7 +8,8 @@ public class SwerveInput : MonoBehaviour
     [Header("-- SETUP --")]
     private float lastFrameFingerPositionX;
     private float moveFactorX;
-    public float SwerveAmount { get; private set; }
+    //public float SwerveAmount { get; private set; }
+    public float MoveFactorX => moveFactorX;
 
     private void Awake()
     {
@@ -24,12 +25,13 @@ public class SwerveInput : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             moveFactorX = Input.mousePosition.x - lastFrameFingerPositionX;
+
             lastFrameFingerPositionX = Input.mousePosition.x;
         }
         else if (Input.GetMouseButtonUp(0))
             moveFactorX = 0f;
 
-        SwerveAmount = moveFactorX * player.SwerveSpeed * Time.deltaTime;
-        SwerveAmount = Mathf.Clamp(SwerveAmount, -player.MaxSwerveAmount, player.MaxSwerveAmount);
+        //SwerveAmount = moveFactorX * player.SwerveSpeed * Time.deltaTime;
+        //SwerveAmount = Mathf.Clamp(SwerveAmount, -player.MaxSwerveAmount, player.MaxSwerveAmount);
     }
 }
