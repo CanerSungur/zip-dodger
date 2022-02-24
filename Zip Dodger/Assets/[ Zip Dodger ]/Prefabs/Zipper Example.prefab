@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useAcceleration: 0
-  maxMovementSpeed: 5
+  maxMovementSpeed: 10
   minMovementSpeed: 1
   accelerationRate: 0.5
   turnSmoothTime: 0.5
@@ -361,6 +361,7 @@ MonoBehaviour:
     m_Bits: 8
   groundedHeightLimit: 0.1
   detachmentForce: 5
+  IsOnShortPlatform: 0
 --- !u!114 &5331413995981604870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +374,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fcc2e76413b7c4db888f2a93804d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activationThreshold: 30
+  restrictionActivationTime: 1
 --- !u!114 &5331413995981604871
 MonoBehaviour:
   m_ObjectHideFlags: 0

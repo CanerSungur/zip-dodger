@@ -1,5 +1,6 @@
 using UnityEngine;
 using ZestGames.Vibrate;
+using ZestGames.Utility;
 
 public class ChildZipperCollectable : CollectableBase
 {
@@ -20,7 +21,9 @@ public class ChildZipperCollectable : CollectableBase
     {
         coll.enabled = false;
 
-        AudioHandler.PlayAudio(AudioHandler.AudioType.Pickup_Coin);
+        AudioHandler.PlayAudio(AudioHandler.AudioType.Pickup_Zipper);
+        if (Utils.RollDice(20)) AudioHandler.PlayAudio(AudioHandler.AudioType.Game_Win, 0.7f, 1f);
+
         if (Vibration.HasVibrator())
             Vibration.VibratePredefined(0, true);
 

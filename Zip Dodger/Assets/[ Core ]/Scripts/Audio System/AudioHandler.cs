@@ -11,6 +11,7 @@ public class AudioHandler
         Player_Land,
         Pickup_Coin,
         Pickup_Trap,
+        Pickup_Zipper,
         Hit_Grinder,
         Hit_Rock,
         Button_Click,

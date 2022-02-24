@@ -12,7 +12,7 @@ public class Grinder : ObstacleBase
     public override void Execute()
     {
         // apply force to the object that hit this object.
-        AudioHandler.PlayAudio(AudioHandler.AudioType.Hit_Grinder,1, 1.5f);
+        AudioHandler.PlayAudio(AudioHandler.AudioType.Hit_Grinder);
         if (Vibration.HasVibrator())
             Vibration.VibratePredefined(0, true);
 

@@ -65,6 +65,9 @@ public class Player : MonoBehaviour
     public bool IsDead { get; private set; }
     public bool IsLanded { get; private set; }
 
+    public static bool SwervingHorizontally, SwervingVertically;
+    public bool IsOnShortPlatform = false;
+
     #endregion
 
     public event Action OnKill, OnJump, OnLand;
@@ -100,6 +103,8 @@ public class Player : MonoBehaviour
         childZippers.Clear();
 
         CurrentRow = 0;
+
+        SwervingHorizontally = SwervingVertically = false;
     }
 
     private void OnEnable() => CharacterPositionHolder.PlayerInScene = this;
@@ -131,8 +136,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         if (!IsMoving() && IsGrounded() && rb) rb.velocity = Vector3.zero;
-
-        currentMovementSpeed = maxMovementSpeed;
 
         if (useAcceleration)
             UpdateCurrentMovementSpeed();

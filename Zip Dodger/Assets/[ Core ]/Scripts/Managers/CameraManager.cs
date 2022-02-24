@@ -53,7 +53,8 @@ public class CameraManager : MonoBehaviour
         GameManager.OnGameStart += () => gameplayCM.Priority = 2;
         OnShakeCam += () => shakeStarted = true;
 
-        Player.OnPickedUpSomething += UpdatePositon;
+        Player.OnPickedUpSomething += UpdatePositonForPickUp;
+        Player.OnDetachZipper += UpdatePositionForDetachedZipper;
     }
 
     private void OnDisable()
@@ -64,7 +65,10 @@ public class CameraManager : MonoBehaviour
         transform.DOKill();
 
         if (Player)
-            Player.OnPickedUpSomething -= UpdatePositon;
+        {
+            Player.OnPickedUpSomething -= UpdatePositonForPickUp;
+            Player.OnDetachZipper -= UpdatePositionForDetachedZipper;
+        }
 
         OnShakeCam = null;
     }
@@ -74,7 +78,7 @@ public class CameraManager : MonoBehaviour
         ShakeCamForAWhile();
     }
 
-    private void UpdatePositon(CollectableEffect obj)
+    private void UpdatePositonForPickUp(CollectableEffect obj)
     {
         if (obj == CollectableEffect.SpawnZipper)
         {
@@ -88,6 +92,19 @@ public class CameraManager : MonoBehaviour
                 gameplayCM.m_Lens.FieldOfView = newFOV;
             }).SetEase(Ease.InOutSine);
         }
+    }
+
+    private void UpdatePositionForDetachedZipper(int ignoreThis)
+    {
+        DOVirtual.Float(CurrentYOffset, defaultYOffset + (Player.CurrentRow * camYAxisChangeRate), camYAxisUpdateTime, newYOffset =>
+        {
+            gameplayCMTransposer.m_FollowOffset.y = newYOffset;
+        }).SetEase(Ease.InOutSine);
+
+        DOVirtual.Float(CurrentFOV, defaultFOV + (Player.CurrentRow * camFOVChangeRate), camYAxisUpdateTime, newFOV =>
+        {
+            gameplayCM.m_Lens.FieldOfView = newFOV;
+        }).SetEase(Ease.InOutSine);
     }
 
     private void ShakeCamForAWhile()

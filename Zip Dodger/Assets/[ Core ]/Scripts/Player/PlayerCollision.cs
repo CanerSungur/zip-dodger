@@ -8,6 +8,11 @@ public class PlayerCollision : MonoBehaviour
 
     public event Action OnHitSomethingFront, OnHitSomethingBack;
 
+    private void OnDisable()
+    {
+        OnHitSomethingBack = OnHitSomethingFront = null;
+    }
+
     private void Awake()
     {
         player = GetComponent<Player>();

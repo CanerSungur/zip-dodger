@@ -13,7 +13,7 @@ public class SwerveMovement : MonoBehaviour
     private bool goLeft = false;
     private bool goRight = false;
 
-    private Vector3 firstMousePos,currentMousePos;
+    private Vector3 firstMousePos, currentMousePos;
 
     private void Awake()
     {
@@ -41,8 +41,12 @@ public class SwerveMovement : MonoBehaviour
             float swerveAmount = Time.fixedDeltaTime * player.SwerveSpeed * player.swerveInput.MoveFactorX;
             swerveAmount = Mathf.Clamp(swerveAmount, -player.MaxSwerveAmount, player.MaxSwerveAmount);
 
-            Vector3 newPos = transform.position + new Vector3(swerveAmount, 0f, 0f);
-            transform.position = Vector3.Lerp(transform.position, newPos, player.CurrentMovementSpeed * Time.fixedDeltaTime);
+                Vector3 newPos = transform.position + new Vector3(swerveAmount, 0f, 0f);
+            if (player.IsOnShortPlatform)
+                transform.position = Vector3.Lerp(transform.position, new Vector3(0f, transform.position.y, transform.position.z), player.CurrentMovementSpeed * Time.fixedDeltaTime);
+            else
+                transform.position = Vector3.Lerp(transform.position, newPos, player.CurrentMovementSpeed * Time.fixedDeltaTime);
+
             ApplyLimitToPositionX(player.HorizontalMovementLimit.x, player.HorizontalMovementLimit.y);
             player.rb.velocity = Vector3.forward * player.CurrentMovementSpeed;
         }

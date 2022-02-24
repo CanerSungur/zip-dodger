@@ -31,7 +31,7 @@ public class GapMovement : MonoBehaviour
 
         defaultMaxDistance = maxDistance;
         affect = Player.CurrentRow + 3;
-        affectLimit = (int)(Player.CurrentRow * 0.5f);
+        affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
     }
 
     private void Start()
@@ -53,14 +53,12 @@ public class GapMovement : MonoBehaviour
     {
         if (!gap.IsControllable) return;
 
-        if (affect < -3f)
+        // Keeping affect value between the zip line length.
+        if (affect < -Player.CurrentRow)
             affect = Player.CurrentRow + 3;
         else if (affect > Player.CurrentRow + 3)
-            affect = -3f;
+            affect = -Player.CurrentRow;
 
-        //float swerveAmount = Time.deltaTime * gap.SwerveSpeed * gap.input.MoveFactorY;
-        //swerveAmount = Mathf.Clamp(swerveAmount, -gap.MaxSwerveAmount, gap.MaxSwerveAmount);
-        
         float newAffect = affect + gap.input.SwerveAmount;
         affect = Mathf.Lerp(affect, newAffect, gap.Speed * Time.deltaTime);
 
@@ -75,13 +73,14 @@ public class GapMovement : MonoBehaviour
     {
         if (obj != CollectableEffect.SpawnZipper) return;
 
-        affectLimit = (int)(Player.CurrentRow * 0.5f);
-        maxDistance = defaultMaxDistance + Player.CurrentRow;
+        CalculateLimits();
     }
 
-    private void UpdateLimitsUponDetachZipper(int ignoreThis)
+    private void UpdateLimitsUponDetachZipper(int ignoreThis) => CalculateLimits();
+
+    private void CalculateLimits()
     {
-        affectLimit = (int)(Player.CurrentRow * 0.5f);
+        affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
         maxDistance = defaultMaxDistance + Player.CurrentRow;
     }
 }
