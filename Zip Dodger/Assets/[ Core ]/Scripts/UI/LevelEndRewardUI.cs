@@ -17,13 +17,13 @@ public class LevelEndRewardUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (GameManager.GameState != GameState.Finished) return;
+        //if (GameManager.GameState == GameState.Finished || GameManager.GameState == GameState.PlatformIsOver)
         HUDUI.UIManager.GameManager.OnCalculateReward += TriggerReward;
     }
 
     private void OnDisable()
     {
-        if (GameManager.GameState != GameState.Finished) return;
+        //if (GameManager.GameState == GameState.Finished || GameManager.GameState == GameState.PlatformIsOver)
         HUDUI.UIManager.GameManager.OnCalculateReward -= TriggerReward;
     }
 

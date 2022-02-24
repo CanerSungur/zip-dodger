@@ -65,8 +65,9 @@ public class Player : MonoBehaviour
     public bool IsDead { get; private set; }
     public bool IsLanded { get; private set; }
 
-    public static bool SwervingHorizontally, SwervingVertically, FinishedPlatform;
+    public static bool SwervingHorizontally, SwervingVertically;
     public bool IsOnShortPlatform = false;
+    public static bool FinishedPlatform { get; private set; }
 
     #endregion
 
@@ -115,6 +116,8 @@ public class Player : MonoBehaviour
         OnJump += () => IsLanded = false;
         OnLand += () => IsLanded = true;
         OnDetachZipper += DetachZipper;
+        GameManager.OnPlatformEnd += () => FinishedPlatform = true;
+        GameManager.OnPlatformEnd += IncreaseCurrentSpeed;
 
         playerCollision.OnHitSomethingBack += () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
     }
@@ -125,6 +128,8 @@ public class Player : MonoBehaviour
         OnJump -= () => IsLanded = false;
         OnLand -= () => IsLanded = true;
         OnDetachZipper -= DetachZipper;
+        GameManager.OnPlatformEnd -= () => FinishedPlatform = true;
+        GameManager.OnPlatformEnd -= IncreaseCurrentSpeed;
 
         playerCollision.OnHitSomethingBack -= () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
 
@@ -175,6 +180,8 @@ public class Player : MonoBehaviour
         return joystickInput ? Physics.Raycast(coll.bounds.center, Vector3.down, coll.bounds.extents.y + groundedHeightLimit, groundLayerMask) && !joystickInput.JumpPressed :
             Physics.Raycast(coll.bounds.center, Vector3.down, coll.bounds.extents.y + groundedHeightLimit, groundLayerMask);
     }
+
+    private void IncreaseCurrentSpeed() => currentMovementSpeed *= 1.5f;
 
     public void KillTrigger() => OnKill?.Invoke();
     public void JumpTrigger() => OnJump?.Invoke();

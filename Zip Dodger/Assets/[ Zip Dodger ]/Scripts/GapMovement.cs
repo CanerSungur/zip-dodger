@@ -1,31 +1,27 @@
 using UnityEngine;
-using TMPro;
 
 [RequireComponent(typeof(Gap))]
 public class GapMovement : MonoBehaviour
 {
     private Gap gap;
-    
-    [Header("-- TESTING --")]
-    public TextMeshProUGUI AffectText;
 
     [Header("-- SETUP --")]
-    [SerializeField, Tooltip("Speed of opening and closing of zipper pairs.")] private float distanceChangeSpeed = 10f;
-    [SerializeField, Tooltip("Fully closed distance of zipper pairs.")] private float defaultDistance = 1.5f;
-    [SerializeField, Tooltip("Fully opened distance of zipper pairs. This will change according to the zip length.")] private float maxDistance = 3f;
-    private float defaultMaxDistance;
+    [SerializeField, Tooltip("Speed of opening and closing of zipper pairs.")] float distanceChangeSpeed = 10f;
+    [SerializeField, Tooltip("Fully closed distance of zipper pairs.")] float defaultDistance = 1.5f;
+    [SerializeField, Tooltip("Fully opened distance of zipper pairs. This will change according to the zip length.")] float maxDistance = 3f;
+    float defaultMaxDistance;
 
-    private float affect = 0f;
+    float affect = 0f;
     public float Affect => affect;
 
-    private float affectLimit; // half of the zipline will be affected.
+    float affectLimit; // half of the zipline will be affected.
     public float AffectLimit => affectLimit;
 
     public float DistanceChangeSpeed => distanceChangeSpeed;
     public float DefaultDistance => defaultDistance;
     public float MaxDistance => maxDistance;
 
-    private void Awake()
+    void Awake()
     {
         gap = GetComponent<Gap>();
 
@@ -34,13 +30,13 @@ public class GapMovement : MonoBehaviour
         affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
     }
 
-    private void Start()
+    void Start()
     {
         gap.Player.OnPickedUpSomething += UpdateLimitsUponPickUp;
         gap.Player.OnDetachZipper += UpdateLimitsUponDetachZipper;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         if (gap.Player)
         {
@@ -49,7 +45,7 @@ public class GapMovement : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (!gap.IsControllable) return;
 
@@ -61,30 +57,28 @@ public class GapMovement : MonoBehaviour
             affect = Mathf.Lerp(affect, 99, gap.Speed * Time.deltaTime);
         else
             affect = Mathf.Lerp(affect, newAffect, gap.Speed * Time.deltaTime);
-
-        AffectText.text = affect.ToString();
     }
 
     /// <summary>
     /// Changes affected zipper count and distance gap according to zip line length.
     /// </summary>
     /// <param name="obj"></param>
-    private void UpdateLimitsUponPickUp(CollectableEffect obj)
+    void UpdateLimitsUponPickUp(CollectableEffect obj)
     {
         if (obj != CollectableEffect.SpawnZipper) return;
 
         CalculateLimits();
     }
 
-    private void UpdateLimitsUponDetachZipper(int ignoreThis) => CalculateLimits();
+    void UpdateLimitsUponDetachZipper(int ignoreThis) => CalculateLimits();
 
-    private void CalculateLimits()
+    void CalculateLimits()
     {
         affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
         maxDistance = defaultMaxDistance + Player.CurrentRow;
     }
 
-    private void KeepAffectValueInBetween()
+    void KeepAffectValueInBetween()
     {
         if (!Player.FinishedPlatform)
         {

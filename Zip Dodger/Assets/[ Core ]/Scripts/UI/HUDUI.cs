@@ -5,10 +5,10 @@ using DG.Tweening;
 
 public class HUDUI : MonoBehaviour
 {
-    private UIManager uiManager;
+    UIManager uiManager;
     public UIManager UIManager { get { return uiManager == null ? uiManager = FindObjectOfType<UIManager>() : uiManager; } }
 
-    private Animator animator;
+    Animator animator;
     public Animator Animator { get { return animator == null ? animator = GetComponent<Animator>() : animator; } }
 
     [Header("-- TEXT REFERENCES --")]
@@ -19,31 +19,39 @@ public class HUDUI : MonoBehaviour
     [SerializeField] private Transform coinHUDTransform;
     public Transform CoinHUDTransform => coinHUDTransform;
 
+    [Header("-- PROGRESS SETUP --")]
+    [SerializeField] GameObject progressHorizontal;
+    [SerializeField] GameObject progressKnob;
+
     public event Action<int> OnUpdateCoinUI;
     public event Action<int> OnUpdateLevelUI;
 
-    private void OnEnable()
+    void OnEnable()
     {
         Animator.enabled = false;
 
         OnUpdateCoinUI += UpdateCoinText;
         OnUpdateLevelUI += UpdateLevelText;
+
+        GameManager.OnPlatformEnd += CloseProgressBar;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         OnUpdateCoinUI -= UpdateCoinText;
         OnUpdateLevelUI -= UpdateLevelText;
+
+        GameManager.OnPlatformEnd -= CloseProgressBar;
     }
 
     public void UpdateCoinUITrigger(int ignoreThis) => OnUpdateCoinUI?.Invoke(ignoreThis);
     public void UpdateLevelUTrigger(int level) => OnUpdateLevelUI?.Invoke(level);
-    private void UpdateLevelText(int level)
+    void UpdateLevelText(int level)
     {
         //Debug.Log("Updated Coin Text");
         levelText.text = $"Level {level}";
     }
-    private void UpdateCoinText(int ignoreThis)
+    void UpdateCoinText(int ignoreThis)
     {
         //Debug.Log("Updated Level Text");
         //coinText.text = coin.ToString();
@@ -52,13 +60,23 @@ public class HUDUI : MonoBehaviour
         ShakeCoinHUD();
     }
 
-    private void ShakeCoinHUD()
+    void ShakeCoinHUD()
     {
         CoinHUDTransform.DORewind();
 
         CoinHUDTransform.DOShakePosition(.5f, .5f);
         CoinHUDTransform.DOShakeRotation(.5f, .5f);
         CoinHUDTransform.DOShakeScale(.5f, .5f);
+    }
+
+    public void CloseProgressBar()
+    {
+        if (progressHorizontal)
+            progressHorizontal.SetActive(false);
+        else if (progressKnob)
+            progressKnob.SetActive(false);
+        else
+            Debug.Log("No Progress Bar.");
     }
 
     // Animation event listener.

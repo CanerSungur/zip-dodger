@@ -5,17 +5,18 @@ using System;
 [RequireComponent(typeof(ChildZipperCollectable))]
 public class ChildZipperCollectableMovement : MonoBehaviour
 {
-    private ChildZipperCollectable childZipperCollectable;
+    ChildZipperCollectable childZipperCollectable;
     public ChildZipperCollectable ChildZipperCollectable { get { return childZipperCollectable == null ? childZipperCollectable = GetComponent<ChildZipperCollectable>() : childZipperCollectable; } }
 
     public event Action OnStartMovement;
 
-    private void OnEnable()
+    void OnEnable()
     {
+        StartRotating();
         OnStartMovement += StartMoving;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         OnStartMovement -= StartMoving;
 
@@ -24,9 +25,7 @@ public class ChildZipperCollectableMovement : MonoBehaviour
 
     public void StartMovingTrigger() => OnStartMovement?.Invoke();
 
-    private void StartMoving()
-    {
-        transform.DOMove(new Vector3(transform.position.x + -0.5f, transform.position.y, transform.position.z + 0.5f), ChildZipperCollectable.CycleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
-        transform.DORotate(new Vector3(360, 0, 180), ChildZipperCollectable.CycleLength, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
-    }
+    void StartMoving() => transform.DOMove(new Vector3(transform.position.x + -0.5f, transform.position.y, transform.position.z + 0.5f), ChildZipperCollectable.CycleLength).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
+    
+    void StartRotating() => transform.DORotate(new Vector3(360, 0, 180), ChildZipperCollectable.CycleLength, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 }

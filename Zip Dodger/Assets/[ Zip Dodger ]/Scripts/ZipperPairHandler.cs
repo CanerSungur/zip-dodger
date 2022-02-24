@@ -62,10 +62,22 @@ public class ZipperPairHandler : MonoBehaviour
         transform.parent = null;
         Rigidbody.isKinematic = false;
         //Collider.enabled = true;
-        ApplyRandomForce();
+        
+        if (Player.FinishedPlatform)
+        {
+            //jump
+            if (_Side == Side.Left)
+                transform.DOJump(new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z), 3f, 1, 2f);
+            else if (_Side == Side.Right)
+                transform.DOJump(new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z), 3f, 1, 2f);
+        }
+        else
+        {
+            ApplyRandomForce();
 
-        Destroy(gameObject, 20f);
-        //Destroy(gameObject);
+            Destroy(gameObject, 20f);
+            //Destroy(gameObject);
+        }
     }
 
     private void ApplyRandomForce()
@@ -83,12 +95,12 @@ public class ZipperPairHandler : MonoBehaviour
             transform.parent = null;
             ChildZipper.IsDetached = ChildZipper.Rigidbody.isKinematic = true;
             ChildZipper.childZipperMovement.enabled = false;
-
+            
             // TODO: Start animation of zipppers.
             if (_Side == Side.Left)
-                transform.DOJump(transform.TransformPoint(transform.position) + new Vector3(-2f, 0f, 0f), 2f, 1, 2f);
+                transform.DOJump(new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z + 2f), 3f, 1, 2f);
             else if (_Side == Side.Right)
-                transform.DOJump(transform.TransformPoint(transform.position) + new Vector3(2f, 0f, 0f), 2f, 1, 2f);
+                transform.DOJump(new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z + 2f), 3f, 1, 2f);
 
             CameraManager.UpdatePositionTrigger();
         }
@@ -116,7 +128,8 @@ public class ZipperPairHandler : MonoBehaviour
     {
         if (other.CompareTag("Finish") && !Player.FinishedPlatform)
         {
-            Player.FinishedPlatform = true;
+            //Player.FinishedPlatform = true;
+            GameManager.PlatformEndTrigger();
         }
 
         if (_Type == Type.Parent && other.TryGetComponent(out CollectableBase collectableForParent))

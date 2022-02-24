@@ -10,7 +10,7 @@ public class PlatformEnd : MonoBehaviour
     [SerializeField] PlatformEndMeter[] meters;
     float activatedYAxis = 0.7f;
     float defaultYAxis = 0f;
-    int distanceBetweenMeters = 2;
+    int distanceBetweenMeters = 4;
 
     public Color[] Colors => colors;
     public float ActivatedYAxis => activatedYAxis;

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class LevelSuccessUI : MonoBehaviour
@@ -9,6 +8,7 @@ public class LevelSuccessUI : MonoBehaviour
 
     private TextMeshProUGUI levelText;
     TextMeshProUGUI multiplierText;
+    TextMeshProUGUI scoreText;
 
     private CustomButton nextButton;
 
@@ -18,9 +18,10 @@ public class LevelSuccessUI : MonoBehaviour
         levelText.text = "Level " + (UIManager.GameManager.levelManager.Level - 1); // -1 because level is increased immediately on level success.
 
         multiplierText = transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>();
-        multiplierText.text = DataManager.LevelEndMultiplier + " inches";
-        //nextButton = GetComponentInChildren<Button>();
-        //nextButton.onClick.AddListener(NextButtonClicked);
+        multiplierText.text = "x" + DataManager.LevelEndMultiplier;
+
+        scoreText= transform.GetChild(2).GetComponentInChildren<TextMeshProUGUI>();
+        scoreText.text = UIManager.GameManager.dataManager.RewardCoin.ToString();
 
         nextButton = GetComponentInChildren<CustomButton>();
         nextButton.onClick.AddListener(NextButtonClicked);
