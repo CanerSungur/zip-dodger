@@ -11,11 +11,12 @@ public class DataManager : MonoBehaviour
 
     public int TotalCoin { get; private set; }
     public int RewardCoin { get; private set; }
+    public static int LevelEndMultiplier;
 
     private void Awake()
     {
         TotalCoin = PlayerPrefs.GetInt("TotalCoin", 0);
-        RewardCoin = 0;
+        RewardCoin = LevelEndMultiplier = 0;
     }
 
     private void Start()
@@ -37,5 +38,9 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void CalculateReward() => RewardCoin = 55;
+    private void CalculateReward(int reward)
+    {
+        RewardCoin = reward;
+        IncreaseTotalCoin(reward);
+    }
 }

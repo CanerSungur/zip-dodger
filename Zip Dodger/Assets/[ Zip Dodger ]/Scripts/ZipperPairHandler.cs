@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class ZipperPairHandler : MonoBehaviour
 {
@@ -41,20 +42,22 @@ public class ZipperPairHandler : MonoBehaviour
         //Collider.enabled = false;
 
         if (_Type == Type.Parent)
-            Player.OnKill += Activate;
+            Player.OnKill += Detach;
         else if (_Type == Type.Child)
-            ChildZipper.OnActivateInnerZipperPair += Activate;
+            ChildZipper.OnActivateInnerZipperPair += Detach;
     }
 
     private void OnDisable()
     {
         if (_Type == Type.Parent && Player)
-            Player.OnKill -= Activate;
+            Player.OnKill -= Detach;
         else if (_Type == Type.Child && ChildZipper)
-            ChildZipper.OnActivateInnerZipperPair -= Activate;
+            ChildZipper.OnActivateInnerZipperPair -= Detach;
+
+        transform.DOKill();
     }
 
-    private void Activate()
+    private void Detach()
     {
         transform.parent = null;
         Rigidbody.isKinematic = false;
@@ -71,6 +74,24 @@ public class ZipperPairHandler : MonoBehaviour
             Rigidbody.AddForce(GenerateRandomForce() * Player.DetachmentForce, ForceMode.Impulse);
         else if (_Type == Type.Child)
             Rigidbody.AddForce(GenerateRandomForce() * ChildZipper.DetachmentForce, ForceMode.Impulse);
+    }
+
+    public void DetachForPlatformEnd()
+    {
+        if (_Type == Type.Child)
+        {
+            transform.parent = null;
+            ChildZipper.IsDetached = ChildZipper.Rigidbody.isKinematic = true;
+            ChildZipper.childZipperMovement.enabled = false;
+
+            // TODO: Start animation of zipppers.
+            if (_Side == Side.Left)
+                transform.DOJump(transform.TransformPoint(transform.position) + new Vector3(-2f, 0f, 0f), 2f, 1, 2f);
+            else if (_Side == Side.Right)
+                transform.DOJump(transform.TransformPoint(transform.position) + new Vector3(2f, 0f, 0f), 2f, 1, 2f);
+
+            CameraManager.UpdatePositionTrigger();
+        }
     }
 
     private Vector3 GenerateRandomForce() => new Vector3(UnityEngine.Random.Range(-2f, 2f), UnityEngine.Random.Range(1f, 2f), UnityEngine.Random.Range(-1f, 1f));
@@ -93,6 +114,11 @@ public class ZipperPairHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Finish") && !Player.FinishedPlatform)
+        {
+            Player.FinishedPlatform = true;
+        }
+
         if (_Type == Type.Parent && other.TryGetComponent(out CollectableBase collectableForParent))
         {
             collectableForParent.Collect();

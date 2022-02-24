@@ -15,7 +15,8 @@ public class AudioHandler
         Hit_Grinder,
         Hit_Rock,
         Button_Click,
-        Testing_PlayerMove
+        Testing_PlayerMove,
+        PlatformEndMeter
     }
 
     private static Dictionary<AudioType, float> audioTimerDictionary;

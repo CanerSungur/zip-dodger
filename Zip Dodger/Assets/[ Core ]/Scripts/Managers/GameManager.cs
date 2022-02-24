@@ -13,11 +13,15 @@ public class GameManager : MonoBehaviour
     internal LevelManager levelManager;
     internal GameplayManager gameplayManager;
 
+    [Header("-- END GAME PROPERTIES --")]
+    [SerializeField, Tooltip("This coin will be multiplied with meter at the level end.")] int defaultRewardForLevelSuccess = 5;
+
+    public int DefaultRewardForLevelSuccess => defaultRewardForLevelSuccess;
     public static GameState GameState { get; private set; }
     public static GameEnd GameEnd { get; private set; }
 
-    public event Action OnGameStart, OnGameEnd, OnLevelSuccess, OnLevelFail, OnChangeScene, OnCalculateReward, OnChangePhase;
-    public event Action<int> OnIncreaseCoin;
+    public event Action OnGameStart, OnGameEnd, OnLevelSuccess, OnLevelFail, OnChangeScene, OnChangePhase;
+    public event Action<int> OnIncreaseCoin, OnCalculateReward;
 
     private void Awake()
     {
@@ -44,8 +48,8 @@ public class GameManager : MonoBehaviour
         OnLevelSuccess -= LevelSuccess;
         OnLevelFail -= LevelFail;
 
-        OnGameStart = OnGameEnd = OnLevelSuccess = OnLevelFail = OnChangeScene = OnCalculateReward = OnChangePhase = null;
-        OnIncreaseCoin = null;
+        OnGameStart = OnGameEnd = OnLevelSuccess = OnLevelFail = OnChangeScene = OnChangePhase = null;
+        OnIncreaseCoin = OnCalculateReward = null;
     }
 
     private void LevelSuccess()
@@ -65,13 +69,15 @@ public class GameManager : MonoBehaviour
         if (GameState != newState) GameState = newState;
     }
 
+    public static void SetGameState(GameState state) => GameState = state;
+
     // Event Trigger Functions
     public void StartGameTrigger() => OnGameStart?.Invoke();
     public void EndGameTrigger() => OnGameEnd?.Invoke();
     public void LevelSuccessTrigger() => OnLevelSuccess?.Invoke();
     public void LevelFailTrigger() => OnLevelFail?.Invoke();
     public void ChangeSceneTrigger() => OnChangeScene?.Invoke();
-    public void CalculateRewardTrigger() => OnCalculateReward?.Invoke();
+    public void CalculateRewardTrigger(int reward) => OnCalculateReward?.Invoke(reward);
     public void ChangePhaseTrigger() => OnChangePhase?.Invoke();
     public void IncreaseCoinTrigger(int amount) => OnIncreaseCoin?.Invoke(amount);
 }

@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
     public bool IsDead { get; private set; }
     public bool IsLanded { get; private set; }
 
-    public static bool SwervingHorizontally, SwervingVertically;
+    public static bool SwervingHorizontally, SwervingVertically, FinishedPlatform;
     public bool IsOnShortPlatform = false;
 
     #endregion
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
 
         CurrentRow = 0;
 
-        SwervingHorizontally = SwervingVertically = false;
+        SwervingHorizontally = SwervingVertically = FinishedPlatform = false;
     }
 
     private void OnEnable() => CharacterPositionHolder.PlayerInScene = this;

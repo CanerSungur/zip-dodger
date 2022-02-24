@@ -58,7 +58,7 @@ public class CoinMovement : MonoBehaviour
             }
             //triggerMoving = false;
 
-            if (Vector3.Distance(transform.position, coinHUDWorldPos) <= 5f && !coinHasReached)
+            if (Vector3.Distance(transform.position, coinHUDWorldPos) <= 3.5f && !coinHasReached)
             {
                 triggerMoving = false;
                 //transform.DOScale(new Vector3(0.5f, 1.2f, 0.7f), 0.5f).SetEase(Ease.InElastic).OnComplete(() => {

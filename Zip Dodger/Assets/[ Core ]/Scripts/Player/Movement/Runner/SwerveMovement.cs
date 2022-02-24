@@ -42,7 +42,7 @@ public class SwerveMovement : MonoBehaviour
             swerveAmount = Mathf.Clamp(swerveAmount, -player.MaxSwerveAmount, player.MaxSwerveAmount);
 
                 Vector3 newPos = transform.position + new Vector3(swerveAmount, 0f, 0f);
-            if (player.IsOnShortPlatform)
+            if (player.IsOnShortPlatform || Player.FinishedPlatform)
                 transform.position = Vector3.Lerp(transform.position, new Vector3(0f, transform.position.y, transform.position.z), player.CurrentMovementSpeed * Time.fixedDeltaTime);
             else
                 transform.position = Vector3.Lerp(transform.position, newPos, player.CurrentMovementSpeed * Time.fixedDeltaTime);

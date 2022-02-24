@@ -25,7 +25,7 @@ public class SwerveInput : MonoBehaviour
     {
         if (!player.IsControllable) return;
 
-        if (player.IsOnShortPlatform)
+        if (player.IsOnShortPlatform || Player.FinishedPlatform)
         {
             moveFactorX = 0;
         }

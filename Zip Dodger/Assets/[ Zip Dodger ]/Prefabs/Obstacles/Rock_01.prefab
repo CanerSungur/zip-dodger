@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4159439796184374860}
-  m_LocalRotation: {x: -0.5238302, y: -0.09336998, z: -0.14920114, w: 0.83344054}
+  m_LocalRotation: {x: -0.5238296, y: -0.0933714, z: -0.14920194, w: 0.8334406}
   m_LocalPosition: {x: -1.73, y: 0.228, z: 21.6}
   m_LocalScale: {x: 100, y: 100.00001, z: 100.00001}
   m_Children: []
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disposable: 0
   obstacleEffect: {fileID: 6185430543415887423, guid: 720bc37f9efcd5949a6a95f1e03b9188, type: 3}
-  pushBack: 0
+  pushBack: 1
   pushBackForce: 100
 --- !u!54 &4159439796184374863
 Rigidbody:

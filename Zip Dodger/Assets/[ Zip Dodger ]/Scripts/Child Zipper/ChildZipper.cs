@@ -29,7 +29,7 @@ public class ChildZipper : MonoBehaviour
     public float FollowDistance => followDistance;
     public float Speed => speed;
     public Transform FollowTarget => followTarget;
-    public bool IsDetached { get; private set; }
+    public bool IsDetached { get; set; }
     public float DetachmentForce => detachmentForce;
 
     public event Action OnActivateInnerZipperPair;

@@ -53,14 +53,14 @@ public class GapMovement : MonoBehaviour
     {
         if (!gap.IsControllable) return;
 
-        // Keeping affect value between the zip line length.
-        if (affect < -Player.CurrentRow)
-            affect = Player.CurrentRow + 3;
-        else if (affect > Player.CurrentRow + 3)
-            affect = -Player.CurrentRow;
+        KeepAffectValueInBetween();
 
         float newAffect = affect + gap.input.SwerveAmount;
-        affect = Mathf.Lerp(affect, newAffect, gap.Speed * Time.deltaTime);
+
+        if (Player.FinishedPlatform)
+            affect = Mathf.Lerp(affect, 99, gap.Speed * Time.deltaTime);
+        else
+            affect = Mathf.Lerp(affect, newAffect, gap.Speed * Time.deltaTime);
 
         AffectText.text = affect.ToString();
     }
@@ -82,5 +82,17 @@ public class GapMovement : MonoBehaviour
     {
         affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
         maxDistance = defaultMaxDistance + Player.CurrentRow;
+    }
+
+    private void KeepAffectValueInBetween()
+    {
+        if (!Player.FinishedPlatform)
+        {
+            // Keeping affect value between the zip line length.
+            if (affect < -Player.CurrentRow)
+                affect = Player.CurrentRow + 3;
+            else if (affect > Player.CurrentRow + 3)
+                affect = -Player.CurrentRow;
+        }
     }
 }

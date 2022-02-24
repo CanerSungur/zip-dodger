@@ -27,10 +27,11 @@ public class LevelEndRewardUI : MonoBehaviour
         HUDUI.UIManager.GameManager.OnCalculateReward -= TriggerReward;
     }
 
-    private void TriggerReward()
+    private void TriggerReward(int reward)
     {
+        Debug.Log("Reward UI Triggered!");
         rewardCoinText = transform.GetChild(transform.childCount - 1).GetComponent<TextMeshProUGUI>();
-        rewardCoinText.text = "+" + HUDUI.UIManager.GameManager.dataManager.RewardCoin;
+        rewardCoinText.text = "+" + reward;
 
         HUDUI.Animator.enabled = true;
         HUDUI.Animator.SetTrigger(startID);

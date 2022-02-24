@@ -24,29 +24,36 @@ public class GapInput : MonoBehaviour
     {
         if (!gap.IsControllable) return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Player.FinishedPlatform)
         {
-            firstFrameFingerPositionY = Input.mousePosition.y;
-            lastFrameFingerPositionY = Input.mousePosition.y;
+            moveFactorY = 0;
         }
-        else if (Input.GetMouseButton(0))
+        else
         {
-            //if (!Player.SwervingHorizontally) Player.SwervingVertically = true;
+            if (Input.GetMouseButtonDown(0))
+            {
+                firstFrameFingerPositionY = Input.mousePosition.y;
+                lastFrameFingerPositionY = Input.mousePosition.y;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                //if (!Player.SwervingHorizontally) Player.SwervingVertically = true;
 
-            moveFactorY = Input.mousePosition.y - lastFrameFingerPositionY;
-            lastFrameFingerPositionY = Input.mousePosition.y;
+                moveFactorY = Input.mousePosition.y - lastFrameFingerPositionY;
+                lastFrameFingerPositionY = Input.mousePosition.y;
 
-            //ActivateSwerveRestriction();
-            if (Mathf.Abs(moveFactorY) <= 0.05f)
-                firstFrameFingerPositionY = lastFrameFingerPositionY;
+                //ActivateSwerveRestriction();
+                if (Mathf.Abs(moveFactorY) <= 0.05f)
+                    firstFrameFingerPositionY = lastFrameFingerPositionY;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                moveFactorY = 0f;
+                Player.SwervingVertically = false;
+            }
+
+            ActivateInputAfterThreshold();
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            moveFactorY = 0f;
-            Player.SwervingVertically = false;
-        }
-
-        ActivateInputAfterThreshold();
     }
 
     private void ActivateInputAfterThreshold()
