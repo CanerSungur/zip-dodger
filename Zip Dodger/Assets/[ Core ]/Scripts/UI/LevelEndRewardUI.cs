@@ -24,6 +24,7 @@ public class LevelEndRewardUI : MonoBehaviour
     private void OnDisable()
     {
         //if (GameManager.GameState == GameState.Finished || GameManager.GameState == GameState.PlatformIsOver)
+        if (!HUDUI || !HUDUI.UIManager || !HUDUI.UIManager.GameManager) return;
         HUDUI.UIManager.GameManager.OnCalculateReward -= TriggerReward;
     }
 
