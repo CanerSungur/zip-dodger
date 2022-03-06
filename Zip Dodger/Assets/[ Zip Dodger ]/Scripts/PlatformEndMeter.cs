@@ -59,6 +59,8 @@ public class PlatformEndMeter : MonoBehaviour
                     // End The Game!
                 });
             });
+
+            player.DetachTrigger();
         }
 
         //if (other.TryGetComponent(out ZipperPairHandler childZipper) && childZipper._Type == ZipperPairHandler.Type.Child && !activated)

@@ -6,6 +6,8 @@ public class ZipperPairDistanceHandler : MonoBehaviour
 {
     private ZipperPairHandler zipperPairHandler;
 
+    [SerializeField] float zAxisOffset = 0.3f;
+
     //[Header("-- SETUP --")]
     //[SerializeField, Tooltip("Speed of opening and closing of zipper pairs.")] private float distanceChangeSpeed = 10f;
     //[SerializeField, Tooltip("Fully closed distance of zipper pairs.")] private float defaultDistance = 1.5f;
@@ -71,13 +73,22 @@ public class ZipperPairDistanceHandler : MonoBehaviour
         CurrentDistance = zipperPairHandler.GapMovement.MaxDistance- ((1 - AffectRatio) * (zipperPairHandler.GapMovement.MaxDistance - zipperPairHandler.GapMovement.DefaultDistance));
         //AffectRatio = 1 - ((maxDistance - CurrentDistance) / (maxDistance - defaultDistance));
 
-        Vector3 newZipperPos = new Vector3(CurrentDistance * 0.5f, 0f, 0f);
-        newZipperPos = transform.InverseTransformDirection(newZipperPos);
+        //Vector3 newZipperPos = new Vector3(CurrentDistance * 0.5f, 0f, 0f);
+        //newZipperPos = transform.InverseTransformDirection(newZipperPos);
 
         if (zipperPairHandler._Side == ZipperPairHandler.Side.Left)
-            transform.localPosition = Vector3.Lerp(transform.localPosition, -newZipperPos, zipperPairHandler.GapMovement.DistanceChangeSpeed * Time.deltaTime);
+        {
+            Vector3 newPos = new Vector3(CurrentDistance * -0.5f, 0f, -zAxisOffset);
+            //newPos = transform.InverseTransformDirection(newPos);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, newPos, zipperPairHandler.GapMovement.DistanceChangeSpeed * Time.deltaTime);
+
+        }
         else if (zipperPairHandler._Side == ZipperPairHandler.Side.Right)
-            transform.localPosition = Vector3.Lerp(transform.localPosition, newZipperPos, zipperPairHandler.GapMovement.DistanceChangeSpeed * Time.deltaTime);
+        {
+            Vector3 newPos = new Vector3(CurrentDistance * 0.5f, 0f, zAxisOffset);
+            //newPos = transform.InverseTransformDirection(newPos);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, newPos, zipperPairHandler.GapMovement.DistanceChangeSpeed * Time.deltaTime);
+        }
     }
 
     private void UpdateAffectRatio()

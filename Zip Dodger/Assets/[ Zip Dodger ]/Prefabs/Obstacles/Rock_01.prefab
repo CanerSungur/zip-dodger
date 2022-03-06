@@ -112,7 +112,7 @@ MonoBehaviour:
   disposable: 0
   obstacleEffect: {fileID: 6185430543415887423, guid: 720bc37f9efcd5949a6a95f1e03b9188, type: 3}
   pushBack: 1
-  pushBackForce: 100
+  pushBackForce: 200
 --- !u!54 &4159439796184374863
 Rigidbody:
   m_ObjectHideFlags: 0

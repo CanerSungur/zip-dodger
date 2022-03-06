@@ -83,9 +83,14 @@ public class GapMovement : MonoBehaviour
         if (!Player.FinishedPlatform)
         {
             // Keeping affect value between the zip line length.
+            //if (affect < -Player.CurrentRow)
+            //    affect = Player.CurrentRow + 3;
+            //else if (affect > Player.CurrentRow + 3)
+            //    affect = -Player.CurrentRow;
+
             if (affect < -Player.CurrentRow)
-                affect = Player.CurrentRow + 3;
-            else if (affect > Player.CurrentRow + 3)
+                affect = Player.CurrentRow * 2f;
+            else if (affect > Player.CurrentRow * 2f)
                 affect = -Player.CurrentRow;
         }
     }

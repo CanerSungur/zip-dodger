@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    public event Action OnKill, OnJump, OnLand;
+    public event Action OnKill, OnJump, OnLand, OnDetach;
     public event Action<CollectableEffect> OnPickedUpSomething;
     public event Action<int> OnDetachZipper;
 
@@ -115,6 +115,7 @@ public class Player : MonoBehaviour
         OnKill += () => IsDead = true;
         OnJump += () => IsLanded = false;
         OnLand += () => IsLanded = true;
+        OnDetach += Detach;
         OnDetachZipper += DetachZipper;
         GameManager.OnPlatformEnd += () => FinishedPlatform = true;
         GameManager.OnPlatformEnd += IncreaseCurrentSpeed;
@@ -127,13 +128,14 @@ public class Player : MonoBehaviour
         OnKill -= () => IsDead = true;
         OnJump -= () => IsLanded = false;
         OnLand -= () => IsLanded = true;
+        OnDetach -= Detach;
         OnDetachZipper -= DetachZipper;
         GameManager.OnPlatformEnd -= () => FinishedPlatform = true;
         GameManager.OnPlatformEnd -= IncreaseCurrentSpeed;
 
         playerCollision.OnHitSomethingBack -= () => { if (useAcceleration) currentMovementSpeed = minMovementSpeed; };
 
-        OnKill = OnJump = OnLand = null;
+        OnKill = OnJump = OnLand = OnDetach = null;
         OnPickedUpSomething = null;
         OnDetachZipper = null;
     }
@@ -144,6 +146,12 @@ public class Player : MonoBehaviour
 
         if (useAcceleration)
             UpdateCurrentMovementSpeed();
+    }
+
+    void Detach()
+    {
+        rb.isKinematic = true;
+        coll.enabled = false;
     }
 
     public void DetachZipper(int row)
@@ -186,6 +194,7 @@ public class Player : MonoBehaviour
     public void KillTrigger() => OnKill?.Invoke();
     public void JumpTrigger() => OnJump?.Invoke();
     public void LandTrigger() => OnLand?.Invoke();
+    public void DetachTrigger() => OnDetach?.Invoke();
     public void PickUpTrigger(CollectableEffect effect) => OnPickedUpSomething?.Invoke(effect);
     public void DetachZipperTrigger(int row) => OnDetachZipper?.Invoke(row);
     //public void IncreaseCurrentRow() => currentRow++;

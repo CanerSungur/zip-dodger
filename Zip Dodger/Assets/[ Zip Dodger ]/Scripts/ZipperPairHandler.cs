@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using ZestGames.Utility;
 
 public class ZipperPairHandler : MonoBehaviour
 {
@@ -36,33 +37,83 @@ public class ZipperPairHandler : MonoBehaviour
         }
     }
 
+    // bounce anim is 0.5f total
+    float bounceWaitTime;
+    Vector3 defaultScale;
+
     private void OnEnable()
     {
         Rigidbody.isKinematic = true;
         //Collider.enabled = false;
+        defaultScale = transform.localScale;
 
         if (_Type == Type.Parent)
+        {
+            bounceWaitTime = Player.CurrentRow * 0.1f;
+
+            //EventManager.OnZipperCollected += () => Utils.DoActionAfterDelay(this, 0f, BounceZippers);
             Player.OnKill += Detach;
+            Player.OnDetach += Detach;
+        }
         else if (_Type == Type.Child)
+        {
+            bounceWaitTime = (Player.CurrentRow - ChildZipper.Row) * 0.1f;
+            //EventManager.OnZipperCollected += () => Utils.DoActionAfterDelay(this, ChildZipper.Row * 0.1f, BounceZippers);
+
             ChildZipper.OnActivateInnerZipperPair += Detach;
+        }
+
+        EventManager.OnZipperCollected += BounceZippers;
     }
 
     private void OnDisable()
     {
         if (_Type == Type.Parent && Player)
+        {
+            //EventManager.OnZipperCollected -= () => Utils.DoActionAfterDelay(this, 0f, BounceZippers);
+
             Player.OnKill -= Detach;
+            Player.OnDetach -= Detach;
+        }
         else if (_Type == Type.Child && ChildZipper)
+        {
+            //EventManager.OnZipperCollected -= () => Utils.DoActionAfterDelay(this, ChildZipper.Row * 0.1f, BounceZippers);
+
             ChildZipper.OnActivateInnerZipperPair -= Detach;
+        }
+
+        EventManager.OnZipperCollected -= BounceZippers;
 
         transform.DOKill();
     }
 
+    void BounceZippers()
+    {
+        if (_Type == Type.Child && ChildZipper.IsDetached) return;
+
+        if (_Type == Type.Parent)
+            bounceWaitTime = Player.CurrentRow * 0.1f;
+        else if (_Type == Type.Child)
+            bounceWaitTime = (Player.CurrentRow - ChildZipper.Row) * 0.1f;
+
+        // bounce zippers according to their row number.
+        Utils.DoActionAfterDelay(this, bounceWaitTime, () => {
+            transform.DOScale(defaultScale * 1.5f, 0.25f).SetEase(Ease.InBounce).OnComplete(() =>
+            {
+                transform.DOScale(defaultScale, 0.25f).SetEase(Ease.OutBounce);
+            });
+        });
+    }
+
     private void Detach()
     {
+        StopAllCoroutines();
+        transform.DOKill();
+
         transform.parent = null;
         Rigidbody.isKinematic = false;
         //Collider.enabled = true;
-        
+
         if (Player.FinishedPlatform)
         {
             //jump
@@ -95,7 +146,7 @@ public class ZipperPairHandler : MonoBehaviour
             transform.parent = null;
             ChildZipper.IsDetached = ChildZipper.Rigidbody.isKinematic = true;
             ChildZipper.childZipperMovement.enabled = false;
-            
+
             // TODO: Start animation of zipppers.
             if (_Side == Side.Left)
                 transform.DOJump(new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z + 2f), 3f, 1, 2f);

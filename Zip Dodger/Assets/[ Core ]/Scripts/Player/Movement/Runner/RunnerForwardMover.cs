@@ -15,6 +15,6 @@ public class RunnerForwardMover : MonoBehaviour
         if (!player.IsControllable) return;
 
         //player.rb.velocity = Vector3.forward * player.CurrentMovementSpeed;
-        player.rb.MovePosition(Vector3.forward * player.CurrentMovementSpeed * Time.fixedDeltaTime);
+        player.rb.MovePosition(transform.position + Vector3.forward * player.CurrentMovementSpeed * Time.fixedDeltaTime);
     }
 }

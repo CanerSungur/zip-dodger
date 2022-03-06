@@ -1712,7 +1712,7 @@ MonoBehaviour:
   disposable: 0
   obstacleEffect: {fileID: 107226, guid: a26def66edc4ef74d92c8394aee18174, type: 3}
   pushBack: 1
-  pushBackForce: 100
+  pushBackForce: 200
 --- !u!1 &8926249142879381142
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,14 @@ public class ChildZipperCollectable : CollectableBase
 
     public float CycleLength => cycleLength;
 
+    public override void Collect()
+    {
+        //EventManager.InvokeEvent(StaticEvents.ZipperCollected);
+        EventManager.Invoke(StaticEvents.ZipperCollected);
+
+        base.Collect();
+    }
+
     public override void Apply()
     {
         coll.enabled = false;
