@@ -6,6 +6,7 @@ public class GapMovement : MonoBehaviour
     private Gap gap;
 
     [Header("-- SETUP --")]
+    [SerializeField, Tooltip("Max number of zippers who will be affected when gaping.")] int maxAffectLimit = 6;
     [SerializeField, Tooltip("Speed of opening and closing of zipper pairs.")] float distanceChangeSpeed = 10f;
     [SerializeField, Tooltip("Fully closed distance of zipper pairs.")] float defaultDistance = 1.5f;
     [SerializeField, Tooltip("Fully opened distance of zipper pairs. This will change according to the zip length.")] float maxDistance = 3f;
@@ -14,8 +15,19 @@ public class GapMovement : MonoBehaviour
     float affect = 0f;
     public float Affect => affect;
 
-    float affectLimit; // half of the zipline will be affected.
-    public float AffectLimit => affectLimit;
+    int affectLimit; // half of the zipline will be affected.
+    public int AffectLimit
+    {
+        get
+        {
+            if (affectLimit < 0)
+                return 0;
+            else if (affectLimit >= maxAffectLimit)
+                return maxAffectLimit;
+            else
+                return affectLimit;
+        }
+    }
 
     public float DistanceChangeSpeed => distanceChangeSpeed;
     public float DefaultDistance => defaultDistance;
@@ -75,7 +87,7 @@ public class GapMovement : MonoBehaviour
     void CalculateLimits()
     {
         affectLimit = (int)(Player.CurrentRow * 0.5f) + 1;
-        maxDistance = defaultMaxDistance + Player.CurrentRow;
+        //maxDistance = defaultMaxDistance + Player.CurrentRow;
     }
 
     void KeepAffectValueInBetween()
@@ -87,11 +99,20 @@ public class GapMovement : MonoBehaviour
             //    affect = Player.CurrentRow + 3;
             //else if (affect > Player.CurrentRow + 3)
             //    affect = -Player.CurrentRow;
-
-            if (affect < -Player.CurrentRow)
-                affect = Player.CurrentRow * 2f;
-            else if (affect > Player.CurrentRow * 2f)
-                affect = -Player.CurrentRow;
+            if (Player.CurrentRow == 0)
+            {
+                if (affect < -2f)
+                    affect = 4f;
+                else if (affect > 4f)
+                    affect = -2f;
+            }
+            else
+            {
+                if (affect < -Player.CurrentRow)
+                    affect = Player.CurrentRow * 2f;
+                else if (affect > Player.CurrentRow * 2f)
+                    affect = -Player.CurrentRow;
+            }
         }
     }
 }
